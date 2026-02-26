@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Canonicalization Flow">
+    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1200">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Start -->
+        <mxCell id="start" value="Start Script (python -m database.canonicalization.canonicalize_speakers)" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="400" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- canonicalize -->
+        <mxCell id="canonicalize" value="canonicalize()" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="420" y="110" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- DB Connection -->
+        <mxCell id="connection" value="create_connection()&#xa;cursor(dictionary=True)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="380" y="200" width="340" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Fetch Rows -->
+        <mxCell id="fetch" value="SELECT Unmapped Raw Rows&#xa;LEFT JOIN speaker_raw_map&#xa;WHERE m.raw_id IS NULL" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="320" width="400" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Decision 1 -->
+        <mxCell id="decision" value="Rows Found?" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="420" y="460" width="260" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Loop -->
+        <mxCell id="loop" value="For Each Row" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="420" y="600" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Transform -->
+        <mxCell id="transform" value="normalize_name()&#xa;extract_company()&#xa;generate_identity_hash()" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="700" width="400" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Decision 2 -->
+        <mxCell id="identityCheck" value="Identity Exists?" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="420" y="830" width="260" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Insert -->
+        <mxCell id="insert" value="INSERT INTO speakers" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="150" y="970" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Update -->
+        <mxCell id="update" value="UPDATE last_seen_year" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="600" y="970" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Insert Mapping -->
+        <mxCell id="mapping" value="INSERT INTO speaker_raw_map" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1060" width="400" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Commit -->
+        <mxCell id="commit" value="commit()" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1150" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Close -->
+        <mxCell id="close" value="close cursor&#xa;close connection" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1240" width="260" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- End -->
+        <mxCell id="end" value="Canonicalization Completed" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1350" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges with Labels -->
+        <mxCell id="e1" edge="1" parent="1" source="start" target="canonicalize"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="canonicalize" target="connection"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="connection" target="fetch"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="fetch" target="decision"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="e4" value="Yes" edge="1" parent="1" source="decision" target="loop" style="edgeStyle=orthogonalEdgeStyle;html=1;fontColor=#000000;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e5" value="No" edge="1" parent="1" source="decision" target="close" style="edgeStyle=orthogonalEdgeStyle;html=1;fontColor=#000000;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e7" edge="1" parent="1" source="loop" target="transform"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="transform" target="identityCheck"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="e9" value="No" edge="1" parent="1" source="identityCheck" target="insert" style="edgeStyle=orthogonalEdgeStyle;html=1;fontColor=#000000;labelBackgroundColor=#ffffff;strokeColor=#000000;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e10" value="Yes" edge="1" parent="1" source="identityCheck" target="update" style="edgeStyle=orthogonalEdgeStyle;html=1;fontColor=#000000;labelBackgroundColor=#ffffff;strokeColor=#000000;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e11" edge="1" parent="1" source="insert" target="mapping"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="update" target="mapping"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="mapping" target="commit"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="commit" target="close"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="close" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

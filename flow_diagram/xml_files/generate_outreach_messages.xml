@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Outreach Message Generation Engine">
+    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1200">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Start -->
+        <mxCell id="start" value="Start Script&#xa;generate_outreach_messages.py" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="330" y="20" width="440" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Fetch Eligible -->
+        <mxCell id="fetch" value="Fetch Eligible Speakers&#xa;JOIN speakers&#xa;JOIN speaker_profiles (is_current=1)&#xa;JOIN speaker_personas&#xa;Exclude existing outreach_messages" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Persona Classification -->
+        <mxCell id="classify" value="Classify Persona&#xa;Strategic / Functional / Operator&#xa;Based on Seniority" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="340" y="280" width="420" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Pre Event -->
+        <mxCell id="pre" value="Generate Pre Event Messages&#xa;- Email (Subject + Body)&#xa;- LinkedIn Message&#xa;Using Theme 1" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="320" y="420" width="460" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- During Event -->
+        <mxCell id="during" value="Generate During Event Email&#xa;Using Theme 2" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="340" y="580" width="420" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Post Event -->
+        <mxCell id="post" value="Generate Post Event Email&#xa;Follow-up + Intro Offer&#xa;Using Theme 2" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="340" y="720" width="420" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Insert Messages -->
+        <mxCell id="insert" value="Insert Into outreach_messages&#xa;Store persona_snapshot JSON&#xa;is_sent = FALSE" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="870" width="460" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Commit -->
+        <mxCell id="commit" value="Commit Transaction&#xa;Close Connection" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="370" y="1020" width="360" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- End -->
+        <mxCell id="end" value="Outreach Messages Generated" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1140" width="400" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" edge="1" parent="1" source="start" target="fetch"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="fetch" target="classify"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="classify" target="pre"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="pre" target="during"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="during" target="post"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="post" target="insert"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="insert" target="commit"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="commit" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

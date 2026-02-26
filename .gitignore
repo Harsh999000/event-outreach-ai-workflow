@@ -1,0 +1,9 @@
+# Ignore Local Config
+config.local.py
+
+#ignore environment 
+__pycache__/
+*.pyc
+.env
+venv/
+.env.*

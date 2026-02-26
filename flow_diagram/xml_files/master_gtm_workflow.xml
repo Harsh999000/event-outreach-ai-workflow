@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Master GTM End To End Workflow">
+    <mxGraphModel dx="1422" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1600">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Start -->
+        <mxCell id="start" value="Event Speaker List&#xa;150 to 200 Contacts" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="400" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Scraper -->
+        <mxCell id="scraper" value="Scraper&#xa;Raw Ingestion&#xa;speakers_raw&#xa;Batch ID and Hashing" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="130" width="500" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Canonical -->
+        <mxCell id="canonical" value="Canonical Identity Layer&#xa;speakers&#xa;identity_hash Enforcement" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="270" width="500" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Enrichment Jobs -->
+        <mxCell id="enrichment" value="Enrichment Layer&#xa;n8n Workflow&#xa;LinkedIn Resolution&#xa;Confidence Scoring&#xa;speaker_profiles Versioned" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="420" width="500" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- Persona -->
+        <mxCell id="persona" value="AI Persona Generation&#xa;Ollama LLM&#xa;persona_summary&#xa;personalization_themes" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="590" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Lead Assignment -->
+        <mxCell id="assignment" value="Lead Assignment Logic&#xa;Strategic to AE&#xa;Functional to SDR&#xa;Priority Tagging" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="740" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Outreach Status -->
+        <mxCell id="status" value="Outreach Lifecycle State&#xa;pre_event&#xa;during_event&#xa;post_event&#xa;closed" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="890" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Message Generation -->
+        <mxCell id="messages" value="Message Generation Engine&#xa;Persona Driven Templates&#xa;Email and LinkedIn Stored" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1040" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Phase Advancement -->
+        <mxCell id="advance" value="Phase Advancement Engine&#xa;Controlled Lifecycle Movement" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1190" width="500" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Send Engine -->
+        <mxCell id="send" value="Send Engine&#xa;Phase Aligned Dispatch&#xa;LinkedIn Cap 5 Per Run&#xa;is_sent Tracking" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1330" width="500" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- End -->
+        <mxCell id="end" value="Complete GTM Automation Lifecycle" style="ellipse;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1480" width="400" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" edge="1" parent="1" source="start" target="scraper"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="scraper" target="canonical"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="canonical" target="enrichment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="enrichment" target="persona"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="persona" target="assignment"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="assignment" target="status"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="status" target="messages"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="messages" target="advance"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="advance" target="send"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="send" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
