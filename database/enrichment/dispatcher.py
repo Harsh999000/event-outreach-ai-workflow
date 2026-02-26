@@ -2,6 +2,7 @@ import requests
 import mysql.connector
 import time
 import random
+import json
 
 # Custom Imports
 from config.settings import DB_CONFIG
@@ -86,6 +87,12 @@ def mark_retry(cursor, job_id, error_message):
 def insert_speaker_profile(cursor, result):
     speaker_id = result["speaker_id"]
 
+    persona = result.get("persona", {})
+
+    persona_summary = persona.get("persona_summary")
+    context_summary = persona.get("context_summary")
+    personalization_themes = persona.get("personalization_themes")
+
     # Deactivate old profile
     cursor.execute("""
         UPDATE speaker_profiles
@@ -102,17 +109,28 @@ def insert_speaker_profile(cursor, result):
     row = cursor.fetchone()
     next_version = row["next_version"]
 
-    # Insert new profile
+    # Insert new profile (with persona stored)
     cursor.execute("""
         INSERT INTO speaker_profiles
-        (speaker_id, linkedin_url, confidence_score, source, enrichment_version, is_current)
-        VALUES (%s, %s, %s, %s, %s, 1)
+        (speaker_id,
+         linkedin_url,
+         confidence_score,
+         source,
+         enrichment_version,
+         is_current,
+         persona_summary,
+         context_summary,
+         personalization_themes)
+        VALUES (%s, %s, %s, %s, %s, 1, %s, %s, %s)
     """, (
         speaker_id,
         result.get("linkedin_url"),
         result.get("confidence_score"),
         "linkedin_resolution_v2",
-        next_version
+        next_version,
+        persona_summary,
+        context_summary,
+        json.dumps(personalization_themes) if personalization_themes else None
     ))
 
 
@@ -188,7 +206,7 @@ def dispatch_jobs():
                     total_failed += 1
                     print(f"Job {job_id} failed. Scheduled for retry.")
 
-                    # Backoff delay on failure
+                    # Backoff delay
                     sleep_time = random.uniform(FAILURE_DELAY_MIN, FAILURE_DELAY_MAX)
                     print(f"Sleeping {int(sleep_time)} seconds (failure backoff)...")
                     time.sleep(sleep_time)

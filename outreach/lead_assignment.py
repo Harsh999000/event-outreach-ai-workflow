@@ -1,12 +1,8 @@
-import mysql.connector  # Connect to MySQL
+import mysql.connector
 import json
-
-# Custom Imports
-# import DB_CONFIG class from settings class inside config package
 from config.settings import DB_CONFIG
 
 
-# Create a connection
 def get_connection():
     return mysql.connector.connect(
         host=DB_CONFIG["host"],
@@ -17,24 +13,26 @@ def get_connection():
     )
 
 
-# Fetch speakers eligible for assignment
 def fetch_unassigned_speakers(cursor):
     query = """
     SELECT 
         s.speaker_id,
-        p.persona_data
+        sp.persona_summary,
+        sp.context_summary,
+        sp.personalization_themes
     FROM speakers s
-    JOIN speaker_personas p
-        ON s.speaker_id = p.speaker_id
+    JOIN speaker_profiles sp
+        ON s.speaker_id = sp.speaker_id
     LEFT JOIN lead_assignments la
         ON s.speaker_id = la.speaker_id
     WHERE la.speaker_id IS NULL
+      AND sp.is_current = 1
+      AND sp.persona_summary IS NOT NULL
     """
     cursor.execute(query)
     return cursor.fetchall()
 
 
-# Classify assignment based on persona
 def classify_assignment(persona_json):
     seniority = persona_json.get("seniority", "UNKNOWN")
 
@@ -46,7 +44,6 @@ def classify_assignment(persona_json):
         return "SDR", "LOW"
 
 
-# Assign leads
 def assign_leads():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -58,7 +55,14 @@ def assign_leads():
 
         for speaker in speakers:
 
-            persona_json = json.loads(speaker["persona_data"])
+            persona_json = {
+                "persona_summary": speaker["persona_summary"],
+                "context_summary": speaker["context_summary"],
+                "personalization_themes": json.loads(speaker["personalization_themes"]) 
+                    if speaker["personalization_themes"] else [],
+                "seniority": "UNKNOWN"
+            }
+
             role, priority = classify_assignment(persona_json)
 
             assigned_to = (
